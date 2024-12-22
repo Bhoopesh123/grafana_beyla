@@ -7,7 +7,7 @@ Make sure to update the node_exporter service ip in alloy configuration in confi
 
     helm  upgrade --install --namespace opentelemetry-demo alloy grafana/alloy -f beyla_k8s_values.yaml
 
-# 2. Install and Configure Alloy on Grafana Beyla on cluster  
+# 2. Install and Configure Grafana Beyla on cluster  
 
     helm repo add grafana https://grafana.github.io/helm-charts
     helm upgrade --install beyla grafana/beyla -f helm-beyla.yaml
@@ -29,3 +29,8 @@ Please refer the below page to install Prometheus on Cluster:
 To Search all of the time series data points grouping by job  in query  
 
     count({__name__=~".+"}) by (job)
+
+# 6. Add the Beyla Dashboard  
+
+Add the below dashboard id
+    19923
