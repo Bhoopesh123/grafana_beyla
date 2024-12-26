@@ -10,7 +10,6 @@
 Make sure to update the node_exporter service ip in alloy configuration in configmap.alloy file before creating configmap
 
     kubectl create configmap --namespace opentelemetry-demo alloy-config "--from-file=config_k8s_beyla.alloy=./config_k8s_beyla.alloy"
-
     helm  upgrade --install --namespace opentelemetry-demo alloy grafana/alloy -f beyla_k8s_values.yaml
 
 # 3. Install and Configure Grafana Beyla on cluster  
