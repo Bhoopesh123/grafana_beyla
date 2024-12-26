@@ -2,34 +2,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: goblog
+  name: nginx
   labels:
-    app: goblog
+    app: nginx
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: goblog
+      app: nginx
   template:
     metadata:
       labels:
-        app: goblog
+        app: nginx
     spec:
       # Required so the sidecar instrument tool can access the service process
       shareProcessNamespace: true
       serviceAccountName: beyla # required if you want kubernetes metadata decoration
       containers:
         # Container for the instrumented service
-        # - name: goblog
-        #   image: mariomac/goblog:dev
-        #   imagePullPolicy: IfNotPresent
-        #   command: ["/goblog"]
-        #   env:
-        #     - name: "GOBLOG_CONFIG"
-        #       value: "/sample/config.yml"
-        #   ports:
-        #     - containerPort: 8443
-        #       name: https
         - name: nginx
           image: nginx:1.14.2
           ports:
