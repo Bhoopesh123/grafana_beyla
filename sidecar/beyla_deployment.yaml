@@ -1,0 +1,51 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: goblog
+  labels:
+    app: goblog
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: goblog
+  template:
+    metadata:
+      labels:
+        app: goblog
+    spec:
+      # Required so the sidecar instrument tool can access the service process
+      shareProcessNamespace: true
+      serviceAccountName: beyla # required if you want kubernetes metadata decoration
+      containers:
+        # Container for the instrumented service
+        # - name: goblog
+        #   image: mariomac/goblog:dev
+        #   imagePullPolicy: IfNotPresent
+        #   command: ["/goblog"]
+        #   env:
+        #     - name: "GOBLOG_CONFIG"
+        #       value: "/sample/config.yml"
+        #   ports:
+        #     - containerPort: 8443
+        #       name: https
+        - name: nginx
+          image: nginx:1.14.2
+          ports:
+          - containerPort: 80
+
+        # Sidecar container with Beyla - the eBPF auto-instrumentation tool
+        - name: beyla
+          image: grafana/beyla:latest
+          securityContext: # Privileges are required to install the eBPF probes
+            privileged: true
+          env:
+            # The internal port of the goblog application container
+            - name: BEYLA_OPEN_PORT
+              value: "80"
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+              value: "http://alloy:4317"
+              # required if you want kubernetes metadata decoration
+            - name: BEYLA_KUBE_METADATA_ENABLE
+              value: "true"
