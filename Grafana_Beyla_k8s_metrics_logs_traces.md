@@ -3,7 +3,7 @@
 
     helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
     helm repo update
-    helm install node-exporter prometheus-community/prometheus-node-exporter
+    helm upgrade --install node-exporter prometheus-community/prometheus-node-exporter
 
 # 2. Install and Configure Alloy on Minikube Cluster  
 
